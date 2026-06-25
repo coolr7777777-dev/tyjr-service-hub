@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#c0392b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>退役军人就业创业服务港</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", Helvetica, Arial, sans-serif; background: #f5f6fa; color: #2d3436; line-height: 1.6; -webkit-overflow-scrolling: touch; }
+        .app { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #f5f6fa; position: relative; padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 0 30px rgba(0,0,0,0.08); }
+
+        /* ===== Level 1: Tab Pages ===== */
+        .l1-page { display: none; padding: 0 0 20px 0; }
+        .l1-page.active { display: block; }
+
+        /* ===== Level 2: Sub-pages within a tab ===== */
+        .l2-page { display: none; padding: 15px; }
+        .l2-page.active { display: block; }
+
+        /* ===== Level 3: Detail pages ===== */
+        .l3-page { display: none; padding: 15px; }
+        .l3-page.active { display: block; }
+
+        /* ===== Banner ===== */
+        .banner { background: linear-gradient(135deg, #c0392b, #8e1a1a); padding: 25px 20px; color: #fff; text-align: center; }
+        .banner h1 { font-size: 1.2rem; letter-spacing: 1px; }
+        .banner p { font-size: 0.7rem; opacity: 0.85; margin-top: 4px; }
+
+        /* ===== Nav Bar (Level 1) ===== */
+        .nav-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 56px; padding-bottom: env(safe-area-inset-bottom, 0px); background: #fff; border-top: 1px solid #e8e8e8; display: flex; z-index: 100; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.6rem; color: #999; cursor: pointer; transition: .2s; }
+        .nav-item.active { color: #c0392b; }
+        .nav-item .icon { font-size: 1.3rem; margin-bottom: 1px; }
+
+        /* ===== Section Headers ===== */
+        .section-title { font-size: 0.9rem; font-weight: 700; padding: 16px 15px 8px; display: flex; align-items: center; gap: 6px; }
+        .section-title::before { content: ''; width: 3px; height: 16px; background: #c0392b; border-radius: 2px; display: inline-block; }
+        .section-sub { font-size: 0.7rem; color: #999; padding: 0 15px 10px; }
+
+        /* ===== Grid (金刚区) ===== */
+        .grid { display: flex; flex-wrap: wrap; background: #fff; margin: 0 15px; border-radius: 10px; padding: 12px 0; }
+        .grid-item { width: 25%; display: flex; flex-direction: column; align-items: center; padding: 8px 0; cursor: pointer; }
+        .grid-item:active { opacity: 0.7; }
+        .grid-icon { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; margin-bottom: 6px; }
+        .grid-text { font-size: 0.65rem; color: #333; }
+
+        .bg-red { background: #c0392b; }
+        .bg-orange { background: #e67e22; }
+        .bg-blue { background: #2980b9; }
+        .bg-green { background: #27ae60; }
+        .bg-purple { background: #8e44ad; }
+        .bg-teal { background: #16a085; }
+        .bg-pink { background: #e84393; }
+        .bg-dark { background: #2c3e50; }
+
+        /* ===== Cards ===== */
+        .card { background: #fff; border-radius: 10px; padding: 14px; margin: 0 15px 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); cursor: pointer; }
+        .card:active { background: #f9f9f9; }
+        .card-row { display: flex; justify-content: space-between; align-items: center; }
+        .card-flat { margin: 0; border-radius: 0; border-bottom: 1px solid #f0f0f0; box-shadow: none; }
+        .card-flat:last-child { border-bottom: none; }
+
+        /* ===== Job Card ===== */
+        .job-title { font-size: 0.9rem; font-weight: 700; flex: 1; }
+        .job-salary { font-size: 0.9rem; font-weight: 700; color: #c0392b; }
+        .job-company { font-size: 0.7rem; color: #999; margin: 4px 0 8px; }
+        .tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+        .tag { font-size: 0.6rem; background: #f0f2f5; color: #666; padding: 2px 7px; border-radius: 3px; }
+        .tag-hot { background: #ffeaea; color: #c0392b; }
+        .tag-new { background: #e8f5e9; color: #27ae60; }
+
+        /* ===== Buttons ===== */
+        .btn { display: block; width: 100%; background: linear-gradient(135deg, #c0392b, #a01a1a); color: #fff; border: none; padding: 11px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-align: center; }
+        .btn-sm { padding: 7px 16px; font-size: 0.7rem; width: auto; border-radius: 6px; }
+        .btn-outline { background: #fff; color: #c0392b; border: 1px solid #c0392b; }
+        .btn-green { background: linear-gradient(135deg, #27ae60, #1e8449); }
+
+        /* ===== Back Header ===== */
+        .back-header { display: flex; align-items: center; gap: 10px; padding: 12px 15px; background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 10; }
+        .back-btn { font-size: 1.2rem; cursor: pointer; color: #333; padding: 4px 8px; }
+        .back-title { font-size: 0.95rem; font-weight: 700; }
+
+        /* ===== Detail Content ===== */
+        .detail-hero { background: linear-gradient(135deg, #2c3e50, #34495e); color: #fff; padding: 25px 15px; text-align: center; margin: -15px -15px 15px; }
+        .detail-hero h2 { font-size: 1.1rem; }
+        .detail-hero .price { font-size: 1.8rem; font-weight: 800; margin: 8px 0; }
+        .detail-section { margin: 15px 0; }
+        .detail-section h3 { font-size: 0.85rem; margin-bottom: 8px; color: #333; }
+        .detail-section p { font-size: 0.78rem; color: #666; line-height: 1.8; }
+        .detail-list { list-style: none; }
+        .detail-list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 0.78rem; display: flex; align-items: center; gap: 8px; }
+        .detail-list li::before { content: '✓'; color: #27ae60; font-weight: bold; }
+
+        /* ===== Form ===== */
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.75rem; color: #555; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; border: 1px solid #ddd; padding: 10px 12px; font-size: 0.85rem; border-radius: 6px; background: #fafafa; font-family: inherit; }
+        .form-group textarea { height: 80px; resize: vertical; }
+
+        /* ===== Announcement List ===== */
+        .anno-item { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; align-items: flex-start; gap: 10px; }
+        .anno-item:active { background: #f9f9f9; }
+        .anno-dot { width: 6px; height: 6px; background: #c0392b; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+        .anno-content { flex: 1; }
+        .anno-title { font-size: 0.82rem; font-weight: 600; color: #333; }
+        .anno-date { font-size: 0.65rem; color: #bbb; margin-top: 3px; }
+
+        /* ===== Product Grid ===== */
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
+        .product-card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); cursor: pointer; }
+        .product-card:active { opacity: 0.7; }
+        .product-img { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+        .product-info { padding: 10px; }
+        .product-name { font-size: 0.78rem; font-weight: 600; }
+        .product-price { font-size: 0.85rem; font-weight: 700; color: #c0392b; margin-top: 4px; }
+        .product-min { font-size: 0.6rem; color: #999; }
+
+        /* ===== Stats Row ===== */
+        .stats-row { display: flex; background: #fff; margin: 0 15px 10px; border-radius: 10px; padding: 15px 0; }
+        .stat-item { flex: 1; text-align: center; }
+        .stat-num { font-size: 1.2rem; font-weight: 800; color: #c0392b; }
+        .stat-label { font-size: 0.6rem; color: #999; margin-top: 3px; }
+
+        /* ===== Category Pills ===== */
+        .pills { display: flex; gap: 8px; padding: 0 15px 12px; overflow-x: auto; }
+        .pill { padding: 6px 14px; border-radius: 20px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; background: #fff; color: #666; border: 1px solid #e0e0e0; }
+        .pill.active { background: #c0392b; color: #fff; border-color: #c0392b; }
+
+        /* ===== Toast ===== */
+        .toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 16px 28px; border-radius: 10px; font-size: 0.85rem; z-index: 999; text-align: center; display: none; }
+        .toast.show { display: block; animation: fadeIn .3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="app" id="app">
+
+    <!-- ============================================ -->
+    <!-- L1: 首页 (服务港)                            -->
+    <!-- ============================================ -->
+    <div id="l1-home" class="l1-page active">
+        <div class="banner">
+            <h1>携手筑梦 · 退役军人服务港</h1>
+            <p>退役军人专属综合服务平台 · 就业对接 · 物资集采 · 政策服务</p>
+        </div>
+
+        <!-- L1 → L2: 金刚区 -->
+        <div class="grid">
+            <div class="grid-item" onclick="navigate('l2-policy')"><div class="grid-icon bg-red">📋</div><div class="grid-text">政策宣贯</div></div>
+            <div class="grid-item" onclick="navigate('l2-honor')"><div class="grid-icon bg-orange">🎖️</div><div class="grid-text">拥军风采</div></div>
+            <div class="grid-item" onclick="switchTab('jobs')"><div class="grid-icon bg-blue">💼</div><div class="grid-text">名企直招</div></div>
+            <div class="grid-item" onclick="switchTab('custom')"><div class="grid-icon bg-green">👕</div><div class="grid-text">大宗定制</div></div>
+            <div class="grid-item" onclick="navigate('l2-training')"><div class="grid-icon bg-purple">🎓</div><div class="grid-text">技能培训</div></div>
+            <div class="grid-item" onclick="navigate('l2-cases')"><div class="grid-icon bg-teal">⭐</div><div class="grid-text">成功案例</div></div>
+            <div class="grid-item" onclick="navigate('l2-guide')"><div class="grid-icon bg-pink">📖</div><div class="grid-text">服务指南</div></div>
+            <div class="grid-item" onclick="switchTab('mine')"><div class="grid-icon bg-dark">📞</div><div class="grid-text">联系我们</div></div>
+        </div>
+
+        <!-- 统计数据 -->
+        <div class="stats-row">
+            <div class="stat-item"><div class="stat-num">1,286</div><div class="stat-label">合作企业</div></div>
+            <div class="stat-item"><div class="stat-num">45,800+</div><div class="stat-label">服务老兵</div></div>
+            <div class="stat-item"><div class="stat-num">823</div><div class="stat-label">本月上岗</div></div>
+            <div class="stat-item"><div class="stat-num">96.8%</div><div class="stat-label">满意度</div></div>
+        </div>
+
+        <!-- 公告列表 → L3详情 -->
+        <div class="section-title">📢 最新公告</div>
+        <div class="card" style="border-radius: 10px 10px 0 0;">
+            <div class="anno-item" onclick="navigate('l3-announce-1')"><div class="anno-dot"></div><div class="anno-content"><div class="anno-title">关于开展2026年度退役军人职业技能培训的通知</div><div class="anno-date">2026-06-20 · 退役军人事务局</div></div></div>
+            <div class="anno-item" onclick="navigate('l3-announce-2')"><div class="anno-dot" style="background:#27ae60;"></div><div class="anno-content"><div class="anno-title">军需企业源头直供：战友聚会服装大宗定制补贴政策</div><div class="anno-date">2026-06-18 · 服务港运营中心</div></div></div>
+            <div class="anno-item" onclick="navigate('l3-announce-3')"><div class="anno-dot" style="background:#2980b9;"></div><div class="anno-content"><div class="anno-title">武汉退役军人专场招聘会（第七期）参会企业名录</div><div class="anno-date">2026-06-15 · 就业创业促进会</div></div></div>
+            <div class="anno-item" onclick="navigate('l3-announce-4')"><div class="anno-dot"></div><div class="anno-content"><div class="anno-title">创业担保贷款贴息政策解读：退役军人专属通道已开通</div><div class="anno-date">2026-06-12 · 合作银行联合公告</div></div></div>
+        </div>
+
+        <!-- 推荐岗位快捷入口 -->
+        <div class="section-title">🔥 急招岗位推荐</div>
+        <div class="card" style="border-radius:10px 10px 0 0;">
+            <div class="card-flat" onclick="navigate('l3-job-1')" style="padding:12px 0;">
+                <div class="card-row"><span class="job-title" style="font-size:0.85rem;">涉密物流主管</span><span class="job-salary">8K-12K</span></div>
+                <div class="job-company">某上市物流集团 · 武汉</div>
+                <div class="tags"><span class="tag tag-hot">急聘</span><span class="tag">五险一金</span><span class="tag">包吃住</span></div>
+            </div>
+            <div class="card-flat" onclick="navigate('l3-job-2')" style="padding:12px 0;">
+                <div class="card-row"><span class="job-title" style="font-size:0.85rem;">高级安保指挥官</span><span class="job-salary">10K-15K</span></div>
+                <div class="job-company">拥军安保集团 · 武汉</div>
+                <div class="tags"><span class="tag tag-hot">急聘</span><span class="tag">年底双薪</span><span class="tag">军管宿舍</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- L1: 找工作                                    -->
+    <!-- ============================================ -->
+    <div id="l1-jobs" class="l1-page">
+        <!-- L2: 职位列表主页 -->
+        <div id="l2-jobs-list" class="l2-page active">
+            <div class="banner"><h1>名企直招 · 专属就业通道</h1><p>退役军人优先 · 协会认证企业 · 薪资透明</p></div>
+            <div class="pills">
+                <span class="pill active" onclick="filterJobs('all', this)">全部</span>
+                <span class="pill" onclick="filterJobs('物流', this)">物流/供应链</span>
+                <span class="pill" onclick="filterJobs('安保', this)">安保/防务</span>
+                <span class="pill" onclick="filterJobs('管理', this)">企业管理</span>
+                <span class="pill" onclick="filterJobs('技术', this)">技术岗</span>
+            </div>
+            <div class="card" style="border-radius:10px 10px 0 0;">
+                <div class="card-flat job-card" data-cat="物流" onclick="navigate('l3-job-1')" style="padding:12px 15px;">
+                    <div class="card-row"><span class="job-title">涉密中型物流主管</span><span class="job-salary">8K-12K</span></div>
+                    <div class="job-company">武汉某大型上市物流集团</div>
+                    <div class="tags"><span class="tag tag-hot">退役军人优先</span><span class="tag">包吃住</span><span class="tag">五险一金</span></div>
+                </div>
+                <div class="card-flat job-card" data-cat="安保" onclick="navigate('l3-job-2')" style="padding:12px 15px;">
+                    <div class="card-row"><span class="job-title">高级安保指挥官</span><span class="job-salary">10K-15K</span></div>
+                    <div class="job-company">武汉本地头部拥军安保集团</div>
+                    <div class="tags"><span class="tag tag-hot">面向退役士官</span><span class="tag">年底双薪</span><span class="tag">带队编制</span></div>
+                </div>
+                <div class="card-flat job-card" data-cat="管理" onclick="navigate('l3-job-3')" style="padding:12px 15px;">
+                    <div class="card-row"><span class="job-title">供应链运营经理</span><span class="job-salary">12K-18K</span></div>
+                    <div class="job-company">军创供应链管理有限公司 · 武汉</div>
+                    <div class="tags"><span class="tag tag-new">退伍军人创办企业</span><span class="tag">股权激励</span></div>
+                </div>
+                <div class="card-flat job-card" data-cat="技术" onclick="navigate('l3-job-4')" style="padding:12px 15px;">
+                    <div class="card-row"><span class="job-title">无人机巡检技术员</span><span class="job-salary">7K-10K</span></div>
+                    <div class="job-company">某能源集团 · 湖北省内</div>
+                    <div class="tags"><span class="tag">退役军人优先</span><span class="tag">带薪培训</span><span class="tag">野外补贴</span></div>
+                </div>
+                <div class="card-flat job-card" data-cat="物流" onclick="navigate('l3-job-5')" style="padding:12px 15px;">
+                    <div class="card-row"><span class="job-title">车队调度主管</span><span class="job-salary">6K-9K</span></div>
+                    <div class="job-company">湖北顺达物流 · 武汉</div>
+                    <div class="tags"><span class="tag">退役军人优先</span><span class="tag">六险一金</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- L1: 大宗定制                                  -->
+    <!-- ============================================ -->
+    <div id="l1-custom" class="l1-page">
+        <div id="l2-custom-list" class="l2-page active">
+            <div class="banner" style="background:linear-gradient(135deg,#1a3c34,#0d1f1a);"><h1>军需品质 · 大宗定制</h1><p>原军需供应链企业直供 · 品质对标部队列装标准</p></div>
+            
+            <!-- 服务优势条 -->
+            <div class="stats-row" style="margin-top:10px;">
+                <div class="stat-item"><div class="stat-num" style="color:#27ae60;">国标</div><div class="stat-label">军需品工艺</div></div>
+                <div class="stat-item"><div class="stat-num" style="color:#27ae60;">30天</div><div class="stat-label">最快交付</div></div>
+                <div class="stat-item"><div class="stat-num" style="color:#27ae60;">50件</div><div class="stat-label">低起订量</div></div>
+                <div class="stat-item"><div class="stat-num" style="color:#27ae60;">8折</div><div class="stat-label">战友专享</div></div>
+            </div>
+
+            <!-- 品类筛选 -->
+            <div class="section-title">📦 产品分类</div>
+            <div class="pills">
+                <span class="pill active" onclick="filterProducts('all', this)">全部</span>
+                <span class="pill" onclick="filterProducts('制服', this)">制式服装</span>
+                <span class="pill" onclick="filterProducts('战术', this)">战术装备</span>
+                <span class="pill" onclick="filterProducts('纪念', this)">纪念品类</span>
+                <span class="pill" onclick="filterProducts('劳保', this)">劳保物资</span>
+            </div>
+
+            <!-- 产品网格 -->
+            <div class="product-grid" id="productGrid">
+                <div class="product-card" data-cat="制服" onclick="navigate('l3-product-1')">
+                    <div class="product-img" style="background:#eaf2f8; height:120px;">🧥</div>
+                    <div class="product-info"><div class="product-name">制式工装套装</div><div class="product-price">¥189/套起</div><div class="product-min">50套起 · 含企业刺绣</div></div>
+                </div>
+                <div class="product-card" data-cat="制服" onclick="navigate('l3-product-3')">
+                    <div class="product-img" style="background:#e8f8f5; height:120px;">👔</div>
+                    <div class="product-info"><div class="product-name">行政工装衬衫</div><div class="product-price">¥89/件起</div><div class="product-min">50件起 · 免烫面料</div></div>
+                </div>
+                <div class="product-card" data-cat="战术" onclick="navigate('l3-product-4')">
+                    <div class="product-img" style="background:#fdedec; height:120px;">🧥</div>
+                    <div class="product-info"><div class="product-name">战术冲锋衣</div><div class="product-price">¥259/件起</div><div class="product-min">30件起 · 防水透气</div></div>
+                </div>
+                <div class="product-card" data-cat="战术" onclick="navigate('l3-product-5')">
+                    <div class="product-img" style="background:#f5eef8; height:120px;">👖</div>
+                    <div class="product-info"><div class="product-name">战术工装裤</div><div class="product-price">¥139/条起</div><div class="product-min">50条起 · 防撕裂面料</div></div>
+                </div>
+                <div class="product-card" data-cat="纪念" onclick="navigate('l3-product-2')">
+                    <div class="product-img" style="background:#fef9e7; height:120px;">🎽</div>
+                    <div class="product-info"><div class="product-name">纪念T恤/Polo衫</div><div class="product-price">¥49/件起</div><div class="product-min">100件起 · 免费印番号</div></div>
+                </div>
+                <div class="product-card" data-cat="纪念" onclick="navigate('l3-product-6')">
+                    <div class="product-img" style="background:#e8f0fe; height:120px;">🧢</div>
+                    <div class="product-info"><div class="product-name">刺绣纪念棒球帽</div><div class="product-price">¥35/顶起</div><div class="product-min">100顶起 · 多色可选</div></div>
+                </div>
+                <div class="product-card" data-cat="劳保" onclick="navigate('l3-product-7')">
+                    <div class="product-img" style="background:#f0f3f0; height:120px;">🧤</div>
+                    <div class="product-info"><div class="product-name">劳保手套（防割级）</div><div class="product-price">¥12/双起</div><div class="product-min">200双起 · EN388认证</div></div>
+                </div>
+                <div class="product-card" data-cat="劳保" onclick="navigate('l3-product-8')">
+                    <div class="product-img" style="background:#fff5e6; height:120px;">🦺</div>
+                    <div class="product-info"><div class="product-name">反光安全马甲</div><div class="product-price">¥28/件起</div><div class="product-min">100件起 · 多口袋设计</div></div>
+                </div>
+            </div>
+
+            <!-- 底部说明 -->
+            <div class="card" style="margin-top:5px; background:#f8f9fa; font-size:0.7rem; color:#999; text-align:center;">
+                📞 大宗采购专线：<strong style="color:#c0392b;">138-XXXX-XXXX</strong> · 支持来样定制 · 对公转账开票
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- L1: 我的 (联系方式)                           -->
+    <!-- ============================================ -->
+    <div id="l1-mine" class="l1-page">
+        <div id="l2-mine-main" class="l2-page active">
+            <div class="banner" style="background:linear-gradient(135deg,#2c3e50,#1a252f);"><h1>联系我们</h1><p>退役军人服务港 · 运营中心</p></div>
+            <div class="card" style="text-align:center; padding:25px;">
+                <div style="font-size:3rem; margin-bottom:10px;">📞</div>
+                <div style="font-size:1.2rem; font-weight:700; color:#c0392b;">138-XXXX-XXXX</div>
+                <div style="font-size:0.78rem; color:#999; margin:8px 0;">服务时间：工作日 9:00-18:00</div>
+            </div>
+            <div class="card" onclick="navigate('l3-contact-form')" style="margin-top:10px;">
+                <div class="card-row"><span style="font-size:0.85rem;">📝 在线留言</span><span style="color:#999;">›</span></div>
+                <div style="font-size:0.7rem; color:#999; margin-top:4px;">留下联系方式，专属顾问将在2小时内回电</div>
+            </div>
+            <div class="card" style="margin-top:10px; border-radius:10px 10px 0 0;">
+                <div class="card-flat" style="padding:12px 0; cursor:default;"><span style="font-size:0.8rem;">📍 地址：湖北省武汉市洪山区退役军人就业创业基地</span></div>
+                <div class="card-flat" style="padding:12px 0; cursor:default;"><span style="font-size:0.8rem;">📧 邮箱：service@tyjr-fwg.cn</span></div>
+                <div class="card-flat" style="padding:12px 0; cursor:default;"><span style="font-size:0.8rem;">🔗 公众号：退役军人服务港</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- L2 Sub-pages (二级页面)                       -->
+    <!-- ============================================ -->
+
+    <!-- 政策宣贯 L2 -->
+    <div id="l2-policy" class="l2-page">
+        <div class="back-header"><span class="back-btn" onclick="goBack()">←</span><span class="back-title">政策宣贯</span></div>
+        <div class="banner"><h1>政策宣贯</h1><p>权威解读 · 精准推送 · 应享尽享</p></div>
+        <div class="stats-row">
+            <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">政策分类</div></div>
+            <div class="stat-item"><div class="stat-num">20,000</div><div class="stat-label">创业扣减/年</div></div>
+            <div class="stat-item"><div class="stat-num">9,000</div><div class="stat-label">招用扣减/人</div></div>
+            <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">免费培训</div></div>
+        </div>
+        <div class="pills">
+            <span class="pill active" onclick="filterPolicy('all', this)">全部</span>
+            <span class="pill" onclick="filterPolicy('就业创业', this)">就业创业</span>
+            <span class="pill" onclick="filterPolicy('教育培训', this)">教育培训</span>
+            <span class="pill" onclick="filterPolicy('税收优待', this)">税收优待</span>
+            <span class="pill" onclick="filterPolicy('优抚安置', this)">优抚安置</span>
+        </div>
+        <div class="card" style="border-radius:10px 10px 0 0;" id="policyList">
+            <div class="card-flat policy-item" data-pol="教育培训" style="padding:14px 15px;" onclick="navigate('l3-announce-1')">
+                <div style="font-weight:600;">📋 2026年度退役军人职业技能培训通知</div>
+                <div style="font-size:0.68rem; color:#999; margin-top:4px;">全额补贴 · 五大类课程 · 退役军人事务部</div><div class="tags" style="margin-top:6px;"><span class="tag tag-hot">最新</span><span class="tag">06-20</span></div>
+            </div>
+            <div class="card-flat policy-item" data-pol="就业创业" style="padding:14px 15px;" onclick="navigate('l3-policy-1')">
+                <div style="font-weight:600;">🏦 创业担保贷款新政——个人最高50万，合伙300万</div>
+                <div style="font-size:0.68rem; color:#999; margin-top:4px;">政府贴息 · 7工作日审批 · 湖北省退役军人事务厅</div><div class="tags" style="margin-top:6px;"><span class="tag">05-28</span></div>
+            </div>
+            <div class="card-flat policy-item" data-pol="税收优待" style="padding:14px 15px;" onclick="navigate('l3-policy-2')">
+                <div style="font-weight:600;">💰 企业招用退役士兵：每人每年税收扣减9,000元</div>
+                <div style="font-size:0.68rem; color:#999; margin-top:4px;">3年连续扣减 · 上限可上浮50% · 国家税务总局</div><div class="tags" style="margin-top:6px;"><span class="tag">05-15</span></div>
+            </div>
+            <div class="card-flat policy-item" data-pol="就业创业" style="padding:14px 15px;" onclick="navigate('l3-policy-3')">
+                <div style="font-weight:600;">🎯 公务员/事业单位定向招录：服役5年以上享专属通道</div>
+                <div style="font-size:0.68rem; color:#999; margin-top:4px;">与基层项目人员共享定向计划 · 人社部</div><div class="tags" style="margin-top:6px;"><span class="tag tag-hot">热门</span><span class="tag">04-22</span></div>
+            </div>
+            <div class="card-flat policy-item" data-pol="教育培训" style="padding:14px 15px;" onclick="navigate('l3-policy-4')">
+                <div style="font-weight:600;">🎓 高考加分+专升本免试+考研加分政策汇总</div>
+                <div style="font-size:0.68rem; color:#999; margin-top:4px;">最高加20分 · 专升本免试 · 教育部</div><div class="tags" style="margin-top:6px;"><span class="tag">03-10</span></div>
+            </div>
+            <div class="card-flat policy-item" data-pol="优抚安置" style="padding:14px 15px;" onclick="navigate('l3-policy-5')">
+                <div style="font-weight:600;">👨‍👩‍👧 军人家属随迁安置与子女教育优待政策</div>
+                <div style="font-size:0.68rem; color:#999; margin-top:4px;">家属随调随迁 · 子女降分录取 · 退役军人事务部</div><div class="tags" style="margin-top:6px;"><span class="tag">02-18</span></div>
+            </div>
+            <div class="card-flat policy-item" data-pol="优抚安置" style="padding:14px 15px;" onclick="navigate('l3-policy-6')">
+                <div style="font-weight:600;">🏥 退役军人医疗保障与优抚对象待遇说明</div>
+                <div style="font-size:0.68rem; color:#999; margin-top:4px;">医疗优先 · 定期体检 · 伤残抚恤 · 退役军人事务部</div><div class="tags" style="margin-top:6px;"><span class="tag">01-25</span></div>
+            </div>
+            <div class="card-flat policy-item" data-pol="就业创业" style="padding:14px 15px;" onclick="navigate('l3-policy-7')">
+                <div style="font-weight:600;">🏗️ 退役军人创业孵化基地入驻指南</div>
+                <div style="font-size:0.68rem; color:#999; margin-top:4px;">免租1年 · 配套资金 · 一站式注册 · 武汉市</div><div class="tags" style="margin-top:6px;"><span class="tag tag-new">申报中</span><span class="tag">01-10</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 拥军风采 L2 -->
+    <div id="l2-honor" class="l2-page">
+        <div class="back-header"><span class="back-btn" onclick="goBack()">←</span><span class="back-title">拥军风采</span></div>
+        <div class="banner" style="background:linear-gradient(135deg,#c0392b,#8e1a1a);"><h1>拥军风采</h1><p>退役不褪色 · 建功新时代</p></div>
+        <div class="stats-row">
+            <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">最美退役军人</div></div>
+            <div class="stat-item"><div class="stat-num">87</div><div class="stat-label">带动就业(人)</div></div>
+            <div class="stat-item"><div class="stat-num">230+</div><div class="stat-label">帮扶战友</div></div>
+            <div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">志愿行动</div></div>
+        </div>
+        <div class="pills">
+            <span class="pill active" onclick="filterHonor('all', this)">全部</span>
+            <span class="pill" onclick="filterHonor('创业', this)">创业先锋</span>
+            <span class="pill" onclick="filterHonor('公益', this)">公益之星</span>
+            <span class="pill" onclick="filterHonor('志愿', this)">志愿英雄</span>
+        </div>
+        <div class="card" style="border-radius:10px 10px 0 0;" id="honorList">
+            <div class="card-flat honor-item" data-hon="创业" style="padding:16px 15px;" onclick="navigate('l3-honor-1')">
+                <div style="display:flex;align-items:flex-start;gap:12px;">
+                    <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#c0392b,#e74c3c);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">🏆</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:0.88rem;">创业先锋 · 张三</div>
+                        <div style="font-size:0.68rem;color:#999;margin-top:2px;">原武警某部班长 · 服役8年</div>
+                        <div style="font-size:0.72rem;color:#666;margin-top:4px;">创办武汉铁卫安保，从5人小队发展为300人企业。吸纳87名退役军人就业，管理层老兵占比超60%，年营收突破2,000万元。</div>
+                        <div class="tags" style="margin-top:6px;"><span class="tag tag-hot">最美退役军人</span><span class="tag">就业标杆</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-flat honor-item" data-hon="公益" style="padding:16px 15px;" onclick="navigate('l3-honor-2')">
+                <div style="display:flex;align-items:flex-start;gap:12px;">
+                    <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#e84393,#fd79a8);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">❤️</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:0.88rem;">公益之星 · 李四</div>
+                        <div style="font-size:0.68rem;color:#999;margin-top:2px;">原陆军某旅士官 · 服役12年</div>
+                        <div style="font-size:0.72rem;color:#666;margin-top:4px;">发起"江城老兵互助基金"，为困难战友家庭提供紧急救助。至今帮扶230余人，募集善款超180万元。2026年获授"武汉市最美退役军人"称号。</div>
+                        <div class="tags" style="margin-top:6px;"><span class="tag tag-hot">最美退役军人</span><span class="tag">公益先锋</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-flat honor-item" data-hon="志愿" style="padding:16px 15px;" onclick="navigate('l3-honor-3')">
+                <div style="display:flex;align-items:flex-start;gap:12px;">
+                    <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#e17055,#fab1a0);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">🚒</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;font-size:0.88rem;">逆行英雄 · 赵六</div>
+                        <div style="font-size:0.68rem;color:#999;margin-top:2px;">原消防兵 · 服役5年</div>
+                        <div style="font-size:0.72rem;color:#666;margin-top:4px;">组建"老兵应急救援志愿队"，2025年长江汛期带领30名老兵奋战72小时转移群众200余人。累计参与抗洪、搜救等行动30余次。</div>
+                        <div class="tags" style="margin-top:6px;"><span class="tag tag-hot">志愿先锋</span><span class="tag">救援英雄</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-title">📸 拥军活动掠影</div>
+        <div class="product-grid" style="padding:0 15px;">
+            <div class="product-card" style="cursor:default;"><div class="product-img" style="background:#eaf2f8;height:90px;font-size:2rem;">📸</div><div class="product-info"><div class="product-name">"八一"战友联谊会</div><div style="font-size:0.65rem;color:#999;">2026.08 · 500+人参加</div></div></div>
+            <div class="product-card" style="cursor:default;"><div class="product-img" style="background:#fef9e7;height:90px;font-size:2rem;">📸</div><div class="product-info"><div class="product-name">退伍季专场招聘会</div><div style="font-size:0.65rem;color:#999;">2026.06 · 67企1200+岗</div></div></div>
+            <div class="product-card" style="cursor:default;"><div class="product-img" style="background:#e8f8f5;height:90px;font-size:2rem;">📸</div><div class="product-info"><div class="product-name">"老兵故事"分享会</div><div style="font-size:0.65rem;color:#999;">2025.12 · 12位创业老兵</div></div></div>
+            <div class="product-card" style="cursor:default;"><div class="product-img" style="background:#fdedec;height:90px;font-size:2rem;">📸</div><div class="product-info"><div class="product-name">抗洪抢险志愿行动</div><div style="font-size:0.65rem;color:#999;">2025.07 · 30名老兵志愿者</div></div></div>
+        </div>
+    </div>
+
+    <!-- 技能培训 L2 -->
+    <div id="l2-training" class="l2-page">
+        <div class="back-header"><span class="back-btn" onclick="goBack()">←</span><span class="back-title">技能培训</span></div>
+        <div class="stats-row" style="margin-top:0;">
+            <div class="stat-item"><div class="stat-num" style="color:#27ae60;">免费</div><div class="stat-label">政府补贴培训</div></div>
+            <div class="stat-item"><div class="stat-num" style="color:#27ae60;">5类</div><div class="stat-label">热门课程</div></div>
+            <div class="stat-item"><div class="stat-num" style="color:#27ae60;">2,340</div><div class="stat-label">结业学员</div></div>
+            <div class="stat-item"><div class="stat-num" style="color:#27ae60;">91%</div><div class="stat-label">就业率</div></div>
+        </div>
+        <div class="card" style="border-radius:10px 10px 0 0;">
+            <div class="card-flat" style="padding:14px 0;" onclick="navigate('l3-training-1')">
+                <div class="card-row"><span style="font-weight:600;">🚁 民用无人机驾驶员认证（AOPA/UTC）</span><span class="tag tag-hot">最热</span></div>
+                <div style="font-size:0.7rem; color:#999;">政府补贴 · 推荐就业 · 15天全日制 · 下期6月30日</div>
+            </div>
+            <div class="card-flat" style="padding:14px 0;" onclick="navigate('l3-training-2')">
+                <div class="card-row"><span style="font-weight:600;">💻 短视频运营与直播电商实战</span><span class="tag tag-new">新增</span></div>
+                <div style="font-size:0.7rem; color:#999;">退役军人免费 · 7天速成 · 手把手教学 · 学完可接单</div>
+            </div>
+            <div class="card-flat" style="padding:14px 0;" onclick="navigate('l3-training-3')">
+                <div class="card-row"><span style="font-weight:600;">🔧 新能源汽车维修技术</span><span class="tag tag-hot">定向委培</span></div>
+                <div style="font-size:0.7rem; color:#999;">30天 · 企业定向 · 实习薪资5K+ · 包考证</div>
+            </div>
+            <div class="card-flat" style="padding:14px 0;" onclick="navigate('l3-training-4')">
+                <div class="card-row"><span style="font-weight:600;">🍳 中式烹饪与餐饮管理</span></div>
+                <div style="font-size:0.7rem; color:#999;">政府补贴 · 30天 · 推荐星级酒店就业 · 创业扶持</div>
+            </div>
+            <div class="card-flat" style="padding:14px 0;" onclick="navigate('l3-training-5')">
+                <div class="card-row"><span style="font-weight:600;">🛡️ 消防设施操作员（中级）</span></div>
+                <div style="font-size:0.7rem; color:#999;">国家职业资格 · 15天培训+考证 · 持证上岗月薪6K+</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功案例 L2 -->
+    <div id="l2-cases" class="l2-page">
+        <div class="back-header"><span class="back-btn" onclick="goBack()">←</span><span class="back-title">成功案例</span></div>
+        <div class="card" style="border-radius:10px 10px 0 0; margin-top:0;">
+            <div class="card-flat" style="padding:14px 0;" onclick="navigate('l3-case-1')">
+                <div style="font-size:0.85rem; font-weight:600;">🏢 武汉铁卫安保 · 87名老兵再就业</div>
+                <div style="font-size:0.7rem; color:#999; margin-top:4px;">退役班长张三创办，从5人小队到300人企业，管理层60%为退役军人</div>
+                <div class="tags" style="margin-top:6px;"><span class="tag tag-hot">就业标杆</span><span class="tag">年营收2000万+</span></div>
+            </div>
+            <div class="card-flat" style="padding:14px 0;" onclick="navigate('l3-case-2')">
+                <div style="font-size:0.85rem; font-weight:600;">📦 军创供应链 · 老兵创业互助平台</div>
+                <div style="font-size:0.7rem; color:#999; margin-top:4px;">12名退役士官联合创办，为30+家军创企业提供采购、物流一站式服务</div>
+                <div class="tags" style="margin-top:6px;"><span class="tag tag-new">创业典范</span><span class="tag">带动就业150+</span></div>
+            </div>
+            <div class="card-flat" style="padding:14px 0;" onclick="navigate('l3-case-3')">
+                <div style="font-size:0.85rem; font-weight:600;">🍜 "老兵食堂"连锁 · 从炊事班到餐饮品牌</div>
+                <div style="font-size:0.7rem; color:#999; margin-top:4px;">原部队炊事班长创业，武汉8家直营店，所有店长均为退役军人</div>
+                <div class="tags" style="margin-top:6px;"><span class="tag">拥军品牌</span><span class="tag">年服务50万人次</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 服务指南 L2 -->
+    <div id="l2-guide" class="l2-page">
+        <div class="back-header"><span class="back-btn" onclick="goBack()">←</span><span class="back-title">服务指南</span></div>
+        <div class="banner" style="background:linear-gradient(135deg,#e84393,#6c3483);"><h1>服务指南</h1><p>一站式了解退役军人各项优待服务</p></div>
+        <div class="card" style="border-radius:10px 10px 0 0;">
+            <div class="card-flat" style="padding:14px 15px; cursor:pointer;" onclick="navigate('l2-policy')">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.5rem;">📋</span><div><div style="font-weight:600;font-size:0.85rem;">政策申报流程</div><div style="font-size:0.68rem;color:#999;">创业补贴 · 税收减免 · 贷款申请</div></div><span style="color:#ccc;margin-left:auto;">›</span></div>
+            </div>
+            <div class="card-flat" style="padding:14px 15px; cursor:pointer;" onclick="switchTab('jobs')">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.5rem;">💼</span><div><div style="font-weight:600;font-size:0.85rem;">就业服务流程</div><div style="font-size:0.68rem;color:#999;">简历投递 · 面试辅导 · 入职跟踪</div></div><span style="color:#ccc;margin-left:auto;">›</span></div>
+            </div>
+            <div class="card-flat" style="padding:14px 15px; cursor:pointer;" onclick="switchTab('custom')">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.5rem;">👕</span><div><div style="font-weight:600;font-size:0.85rem;">大宗采购流程</div><div style="font-size:0.68rem;color:#999;">选款咨询 · 提交意向 · 签约生产 · 验收交付</div></div><span style="color:#ccc;margin-left:auto;">›</span></div>
+            </div>
+            <div class="card-flat" style="padding:14px 15px; cursor:pointer;" onclick="navigate('l2-training')">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.5rem;">🎓</span><div><div style="font-weight:600;font-size:0.85rem;">培训报名流程</div><div style="font-size:0.68rem;color:#999;">选课 · 审核 · 开班 · 考证 · 推荐就业</div></div><span style="color:#ccc;margin-left:auto;">›</span></div>
+            </div>
+        </div>
+        <div class="section-title">📄 常用表格下载</div>
+        <div class="card" style="font-size:0.78rem; color:#666; line-height:2.2;">
+            <p onclick="showToast('表格下载功能开发中')" style="cursor:pointer;">📥 退役军人创业补贴申请表.docx</p>
+            <p onclick="showToast('表格下载功能开发中')" style="cursor:pointer;">📥 税收扣减资格认定表.xlsx</p>
+            <p onclick="showToast('表格下载功能开发中')" style="cursor:pointer;">📥 技能培训报名登记表.pdf</p>
+            <p onclick="showToast('表格下载功能开发中')" style="cursor:pointer;">📥 大宗定制采购意向书.docx</p>
+        </div>
+    </div>
+
+    <!-- 税收优惠 L2 -->
+    <div id="l2-tax" class="l2-page">
+        <div class="back-header"><span class="back-btn" onclick="goBack()">←</span><span class="back-title">税收优惠</span></div>
+        <div class="card" style="background:linear-gradient(135deg,#e84393,#6c3483); color:#fff; text-align:center;">
+            <div style="font-size:2.5rem;">💰</div>
+            <div style="font-weight:700;">退役军人专属税收优惠</div>
+            <div style="font-size:0.7rem; opacity:0.85;">普惠政策 · 应享尽享</div>
+        </div>
+        <div class="card">
+            <div style="font-size:0.85rem; font-weight:700; margin-bottom:8px;">🔵 自主创业税收扣减</div>
+            <div style="font-size:0.75rem; color:#666; line-height:1.8;">
+                自主就业退役士兵从事个体经营，3年内按每户每年<strong style="color:#c0392b;">20,000元</strong>限额依次扣减增值税、城建税、教育费附加、地方教育附加和个人所得税。上限可上浮20%（即最高24,000元/年）。
+            </div>
+        </div>
+        <div class="card" style="margin-top:8px;">
+            <div style="font-size:0.85rem; font-weight:700; margin-bottom:8px;">🔵 企业招用退役士兵税收扣减</div>
+            <div style="font-size:0.75rem; color:#666; line-height:1.8;">
+                企业招用自主就业退役士兵，签订1年以上劳动合同并缴纳社保，在3年内按实际招用人数每人每年<strong style="color:#c0392b;">9,000元</strong>定额扣减。上限可上浮50%（即最高13,500元/人/年）。
+            </div>
+        </div>
+        <div class="card" style="margin-top:8px;">
+            <div style="font-size:0.85rem; font-weight:700; margin-bottom:8px;">🔵 军转干部税收优惠</div>
+            <div style="font-size:0.75rem; color:#666; line-height:1.8;">
+                军队转业干部从事个体经营，自领取营业执照之日起<strong style="color:#c0392b;">3年内免征</strong>增值税和个人所得税。为安置自主择业军转干部而新开办的企业，安置人数占企业总人数60%以上的，3年内免征增值税。
+            </div>
+        </div>
+        <div class="card" style="margin-top:8px; border-radius:0 0 10px 10px;">
+            <div style="font-size:0.85rem; font-weight:700; margin-bottom:8px;">🔵 随军家属就业税收优惠</div>
+            <div style="font-size:0.75rem; color:#666; line-height:1.8;">
+                为安置随军家属就业新开办的企业，随军家属占企业总人数60%以上的，<strong style="color:#c0392b;">3年内免征</strong>增值税。随军家属从事个体经营的，3年内免征增值税和个人所得税。
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- L3 Detail Pages (三级详情页)                  -->
+    <!-- ============================================ -->
+
+    <!-- JOB DETAILS -->
+    <div id="l3-job-1" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">职位详情</span></div>
+        <div class="detail-hero">
+            <h2>涉密中型物流主管</h2>
+            <div class="price">¥8,000-12,000/月</div>
+            <div style="font-size:0.75rem; opacity:0.8;">武汉某大型上市物流集团</div>
+        </div>
+        <div class="card">
+            <div class="tags" style="margin-bottom:12px;"><span class="tag tag-hot">退役军人优先</span><span class="tag">五险一金</span><span class="tag">包吃住</span><span class="tag">专属晋升通道</span></div>
+            <div class="detail-section"><h3>岗位职责</h3><p>1. 负责中型物流中转站日常运营管理<br>2. 管理调度10-20人团队<br>3. 执行涉密物资运输安保流程<br>4. 与客户进行日常对接与问题处理</p></div>
+            <div class="detail-section"><h3>任职要求</h3><p>服役满2年以上，组织纪律性强。同等条件下优秀士兵、班长、士官优先。具备基本电脑操作能力。</p></div>
+            <div class="detail-section"><h3>专属优待</h3><ul class="detail-list"><li>军龄计入工龄，直接影响薪资等级</li><li>提供管理培训生晋升通道</li><li>子女入学协助</li></ul></div>
+            <button class="btn" onclick="showToast('申请已提交！专属客服将在24小时内与您联系，请保持手机畅通。')">退役军人专属通道 · 立即申请</button>
+        </div>
+    </div>
+
+    <div id="l3-job-2" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">职位详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#1a5276,#154360);">
+            <h2>高级安保指挥官</h2>
+            <div class="price">¥10,000-15,000/月</div>
+            <div style="font-size:0.75rem; opacity:0.8;">武汉本地头部拥军安保集团</div>
+        </div>
+        <div class="card">
+            <div class="tags" style="margin-bottom:12px;"><span class="tag tag-hot">面向退役士官</span><span class="tag">年底双薪</span><span class="tag">军管宿舍</span><span class="tag">带队编制</span></div>
+            <div class="detail-section"><h3>岗位职责</h3><p>1. 负责大型企业集团/涉密园区的高级防务管理<br>2. 制定安保方案与应急预案<br>3. 带队执行日常巡查与应急响应</p></div>
+            <div class="detail-section"><h3>任职要求</h3><p>原武警、特战、侦察或步兵兵种优先，服役5年以上。具备团队管理经验。</p></div>
+            <button class="btn" onclick="showToast('申请已提交！专属客服将在24小时内与您联系。')">退役军人专属通道 · 立即申请</button>
+        </div>
+    </div>
+
+    <div id="l3-job-3" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">职位详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#27ae60,#1e8449);">
+            <h2>供应链运营经理</h2>
+            <div class="price">¥12,000-18,000/月</div>
+            <div style="font-size:0.75rem; opacity:0.8;">军创供应链管理有限公司</div>
+        </div>
+        <div class="card">
+            <div class="tags" style="margin-bottom:12px;"><span class="tag tag-new">退伍军人创办</span><span class="tag">股权激励</span><span class="tag">五险一金</span></div>
+            <div class="detail-section"><h3>岗位职责</h3><p>1. 负责供应链全流程运营管理<br>2. 对接军需品供应商与B端客户<br>3. 优化采购成本与交付效率</p></div>
+            <div class="detail-section"><h3>任职要求</h3><p>有军需/物流相关经验优先，3年以上管理经验。退役军人优先，核心岗位有股权激励。</p></div>
+            <button class="btn btn-green" onclick="showToast('申请已提交！该企业为战友创办，将优先处理您的申请。')">战友企业 · 立即申请</button>
+        </div>
+    </div>
+
+    <div id="l3-job-4" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">职位详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#8e44ad,#6c3483);">
+            <h2>无人机巡检技术员</h2>
+            <div class="price">¥7,000-10,000/月</div>
+            <div style="font-size:0.75rem; opacity:0.8;">某能源集团 · 湖北省内</div>
+        </div>
+        <div class="card">
+            <div class="tags" style="margin-bottom:12px;"><span class="tag">退役军人优先</span><span class="tag">带薪培训</span><span class="tag">野外补贴</span></div>
+            <div class="detail-section"><h3>岗位职责</h3><p>1. 操作无人机对电力线路/管道进行巡检<br>2. 分析巡检数据，撰写巡检报告</p></div>
+            <div class="detail-section"><h3>任职要求</h3><p>无经验可带薪培训。有无人机操作经验或侦察/通信兵种优先。</p></div>
+            <button class="btn" onclick="showToast('申请已提交！该岗位提供免费带薪培训。')">退役军人专属通道 · 立即申请</button>
+        </div>
+    </div>
+
+    <div id="l3-job-5" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">职位详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#e67e22,#d35400);">
+            <h2>车队调度主管</h2>
+            <div class="price">¥6,000-9,000/月</div>
+            <div style="font-size:0.75rem; opacity:0.8;">湖北顺达物流 · 武汉</div>
+        </div>
+        <div class="card">
+            <div class="tags" style="margin-bottom:12px;"><span class="tag">退役军人优先</span><span class="tag">六险一金</span></div>
+            <div class="detail-section"><h3>岗位职责</h3><p>1. 负责车队日常调度与路线规划<br>2. 管理司机团队，确保运输时效</p></div>
+            <div class="detail-section"><h3>任职要求</h3><p>有驾驶经验或汽车兵背景优先。组织协调能力强。</p></div>
+            <button class="btn" onclick="showToast('申请已提交！')">立即申请</button>
+        </div>
+    </div>
+
+    <!-- ANNOUNCEMENT DETAILS -->
+    <div id="l3-announce-1" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">公告详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem; margin-bottom:8px;">关于开展2026年度退役军人职业技能培训的通知</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin-bottom:12px;">2026-06-20 · 退役军人事务局</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p>为深入贯彻退役军人事务部关于促进退役军人就业创业的决策部署，定于2026年7月至12月开展本年度退役军人职业技能培训工作。</p>
+                <p style="margin-top:10px;"><strong>培训项目包括：</strong></p>
+                <p>1. 民用无人机驾驶员认证（AOPA/UTC）<br>2. 新能源汽车维修技术<br>3. 中式烹饪与餐饮管理<br>4. 短视频运营与电商直播<br>5. 安保与消防设施操作员</p>
+                <p style="margin-top:10px;"><strong>报名条件：</strong>武汉市接收的自主就业退役士兵、自主择业军转干部。</p>
+                <p style="margin-top:10px;"><strong>费用说明：</strong>培训费用由政府全额补贴，培训期间享受生活补助。</p>
+            </div>
+            <button class="btn" style="margin-top:15px;" onclick="showToast('报名通道已开启，客服将联系您确认培训项目')">我要报名</button>
+        </div>
+    </div>
+
+    <div id="l3-announce-2" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">公告详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem; margin-bottom:8px;">军需企业源头直供：战友聚会服装大宗定制补贴政策</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin-bottom:12px;">2026-06-18 · 服务港运营中心</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p>为支持退役军人战友联谊活动，服务港联合军需供应链企业推出专项补贴：</p>
+                <p style="margin-top:10px;"><strong>补贴标准：</strong></p>
+                <p>· 定制50-100件：享9折优惠<br>· 定制100-300件：享8.5折优惠 + 免费刺绣部队番号<br>· 定制300件以上：享8折优惠 + 免费设计 + 加急交付</p>
+                <p style="margin-top:10px;">适用品类：纪念T恤、冲锋衣、棒球帽、纪念徽章等。所有产品均为军需品同款工艺标准。</p>
+            </div>
+            <button class="btn btn-green" onclick="switchTab('custom')">去定制专区</button>
+        </div>
+    </div>
+
+    <div id="l3-announce-3" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">公告详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem; margin-bottom:8px;">武汉退役军人专场招聘会（第七期）参会企业名录</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin-bottom:12px;">2026-06-15 · 就业创业促进会</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p>第七期专场招聘会定于<strong>2026年7月5日</strong>在武汉市退役军人就业创业基地举办。</p>
+                <p style="margin-top:10px;"><strong>已确认参会企业（部分）：</strong></p>
+                <p>· 顺丰速运湖北分公司<br>· 武汉市保安集团<br>· 九州通医药集团<br>· 中建三局<br>· 东风汽车集团</p>
+                <p style="margin-top:10px;">提供岗位涵盖物流管理、安保防务、工程管理、行政后勤等类别，薪资范围5K-20K。</p>
+            </div>
+            <button class="btn" onclick="showToast('已为您预约招聘会入场，届时期待您的参与！')">预约参会</button>
+        </div>
+    </div>
+
+    <div id="l3-announce-4" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">公告详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem; margin-bottom:8px;">创业担保贷款贴息政策解读：退役军人专属通道已开通</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin-bottom:12px;">2026-06-12 · 合作银行联合公告</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>贷款额度：</strong>个人最高50万元，合伙创业最高300万元。</p>
+                <p><strong>贷款期限：</strong>最长3年。</p>
+                <p><strong>贴息政策：</strong>LPR-150BP以下部分由借款人承担，剩余部分财政给予贴息。</p>
+                <p style="margin-top:10px;">合作银行：建设银行、农业银行、湖北银行。</p>
+            </div>
+            <button class="btn btn-green" onclick="showToast('贷款专员将在1个工作日内联系您')">申请专属通道</button>
+        </div>
+    </div>
+
+    <!-- POLICY DETAILS -->
+    <div id="l3-policy-1" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">政策详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem;">退役军人创业担保贷款最新政策（2026版）</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin:8px 0 12px;">2026-05-28 · 湖北省退役军人事务厅</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p>新修订的《湖北省退役军人创业担保贷款实施办法》已于2026年5月1日起施行。主要变化：</p>
+                <p style="margin-top:8px;">1. 贷款上限从30万提高至50万<br>2. 简化审批流程，从15个工作日压缩至7个工作日<br>3. 新增无抵押信用贷款产品<br>4. 合伙创业最高可贷300万</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="l3-policy-2" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">政策详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem;">吸纳退役军人就业的企业税收扣减政策</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin:8px 0 12px;">2026-05-15 · 国家税务总局</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p>企业招用自主就业退役士兵，与其签订1年以上期限劳动合同并依法缴纳社会保险费的，自签订劳动合同并缴纳社会保险当月起，在3年内按实际招用人数予以定额依次扣减增值税、城市维护建设税、教育费附加、地方教育附加和企业所得税优惠。</p>
+                <p style="margin-top:8px;"><strong>定额标准：每人每年9,000元。</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="l3-policy-4" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">政策详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem;">退役军人高考加分及学历提升政策汇总</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin:8px 0 12px;">2026-03-10 · 教育部</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>高考加分：</strong>自主就业退役士兵可在其高考文化统考成绩总分基础上增加10分投档；服役期间荣立二等功以上或被大军区以上单位授予荣誉称号的，增加20分投档。</p>
+                <p style="margin-top:8px;"><strong>专升本：</strong>高职（专科）学生应征入伍，退役后完成高职学业可免试入读普通本科或成人本科。</p>
+                <p style="margin-top:8px;"><strong>考研：</strong>高校学生应征入伍服义务兵役退役，达到报考条件后3年内参加全国硕士研究生招生考试，初试总分加10分。</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="l3-policy-5" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">政策详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem;">军人家属随迁安置与子女教育优待政策</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin:8px 0 12px;">2026-02-18 · 退役军人事务部</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>随迁安置：</strong>符合条件的退役军人家属可随调随迁，安置地政府应予以接收并妥善安排工作。</p>
+                <p style="margin-top:8px;"><strong>子女教育：</strong>退役军人子女在入学、转学方面享受优待，烈士子女、因公牺牲军人子女报考普通高中、中等职业学校时降分录取。</p>
+            </div>
+        </div>
+    </div>
+    <div id="l3-policy-3" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">政策详情</span></div>
+            <div style="font-size:0.65rem; color:#bbb; margin:8px 0 12px;">2026-04-22</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p>在军队服役5年（含）以上的高校毕业生退役士兵，可以报考面向服务基层项目人员定向考录的职位，同服务基层项目人员共享公务员定向考录计划。</p>
+                <p style="margin-top:8px;">公安机关面向退役军人定向招录人民警察。各地应当设置一定数量基层公务员职位，面向退役军人招考。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CASE DETAILS -->
+    <div id="l3-policy-6" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">政策详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem;">🏥 退役军人医疗保障与优抚对象待遇说明</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin:8px 0 12px;">2026-01-25 · 退役军人事务部</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>医疗优待：</strong>退役军人凭有效证件在公立医院享受优先挂号、优先就诊、优先取药、优先住院"四优先"服务。</p>
+                <p style="margin-top:8px;"><strong>伤残抚恤：</strong>因战、因公致残的退役军人，按伤残等级享受定期抚恤金，标准每年动态调整。</p>
+                <p style="margin-top:8px;"><strong>健康体检：</strong>部分地方政府为60岁以上农村籍退役士兵提供免费年度体检。</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="l3-policy-7" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">政策详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3 style="font-size:0.95rem;">🏗️ 退役军人创业孵化基地入驻指南</h3>
+            <div style="font-size:0.65rem; color:#bbb; margin:8px 0 12px;">2026-01-10 · 武汉市退役军人事务局</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>支持政策：</strong></p>
+                <p>· 办公场地：免租1年（第2-3年减半）</p><p>· 配套资金：优秀项目可获得5-20万元启动扶持</p><p>· 一站式服务：工商注册、税务登记、银行开户全程代办</p><p>· 创业导师：一对一导师辅导，定期创业培训</p>
+                <p style="margin-top:8px;"><strong>申请条件：</strong>退役军人为主要创办人或控股股东，企业注册地在武汉市，项目符合国家产业政策导向。</p>
+            </div>
+            <button class="btn" onclick="showToast('入驻申请已收到！基地运营团队将联系您对接。')">申请入驻</button>
+        </div>
+    </div>
+    <div id="l3-case-1" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">成功案例</span></div>
+        <div class="card" style="margin-top:0; text-align:center;">
+            <div style="font-size:3rem;">🏢</div>
+            <h3 style="margin:8px 0;">武汉铁卫安保服务有限公司</h3>
+            <div style="font-size:0.75rem; color:#999;">创始人：张三（原武警某部班长 · 服役8年）</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8; text-align:left; margin-top:12px;">
+                <p><strong>创业历程：</strong>2018年退伍后，张三带着5名战友从社区保安队起步。通过服务港对接的创业贷款和政策扶持，逐步发展为拥有300余名员工的区域头部安保企业。</p>
+                <p style="margin-top:8px;"><strong>服务港助力：</strong></p>
+                <p>· 对接创业担保贷款30万元<br>· 提供企业管理培训3期<br>· 协助申请退役军人创业示范基地资质<br>· 大宗团购制式工装500余套（享战友价）</p>
+                <p style="margin-top:8px;"><strong>拥军成果：</strong>累计吸纳87名退役军人就业，管理层退役军人占比超60%，年营收突破2,000万元。</p>
+            </div>
+            <button class="btn" style="margin-top:12px;" onclick="showToast('已收到咨询，客服将分享全套创业扶持方案')">我也要创业 · 咨询扶持方案</button>
+        </div>
+    </div>
+
+    <div id="l3-case-2" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">成功案例</span></div>
+        <div class="card" style="margin-top:0; text-align:center;">
+            <div style="font-size:3rem;">📦</div>
+            <h3 style="margin:8px 0;">军创供应链管理有限公司</h3>
+            <div style="font-size:0.75rem; color:#999;">12名退役士官联合创办</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8; text-align:left; margin-top:12px;">
+                <p><strong>创业背景：</strong>12名来自不同部队的退役士官发现：大量战友创办的企业在采购、物流环节缺乏议价能力和专业支持。2022年联合成立军创供应链，专门服务退役军人创办的中小企业。</p>
+                <p style="margin-top:8px;"><strong>服务港助力：</strong></p>
+                <p>· 对接军需品源头供应商（降低采购成本35%）<br>· 提供办公场地（退役军人就业创业基地免租1年）<br>· 牵线12家军创企业成为首批客户</p>
+                <p style="margin-top:8px;"><strong>当前成果：</strong>服务30+家军创企业，间接带动就业150余人，2025年平台交易额突破5,000万元。</p>
+            </div>
+            <button class="btn" onclick="showToast('已收到合作意向，供应链团队将联系您')">对接军创供应链 · 合作咨询</button>
+        </div>
+    </div>
+
+    <div id="l3-case-3" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">成功案例</span></div>
+        <div class="card" style="margin-top:0; text-align:center;">
+            <div style="font-size:3rem;">🍜</div>
+            <h3 style="margin:8px 0;">"老兵食堂"连锁餐饮</h3>
+            <div style="font-size:0.75rem; color:#999;">创始人：王刚（原陆军某旅炊事班长 · 服役6年）</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8; text-align:left; margin-top:12px;">
+                <p><strong>创业历程：</strong>退伍后从一家20平米的小面馆开始。凭借部队炊事班的严谨标准和对战友群体的深刻理解，打造了"经济实惠、分量足、口味正"的老兵食堂品牌。</p>
+                <p style="margin-top:8px;"><strong>服务港助力：</strong></p>
+                <p>· 协助申请退役军人创业补贴<br>· 对接餐饮管理培训课程<br>· 牵线团餐客户（安保公司、物流园区）</p>
+                <p style="margin-top:8px;"><strong>当前规模：</strong>武汉8家直营店，所有店长均为退役军人，年服务顾客超50万人次。</p>
+            </div>
+            <button class="btn btn-green" onclick="showToast('已收到咨询，我们将分享餐饮创业全套方案')">餐饮创业咨询</button>
+        </div>
+    </div>
+    <div id="l3-honor-1" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">拥军风采</span></div>
+        <div class="card" style="margin-top:0; text-align:center;">
+            <div style="font-size:3rem;">🏆</div>
+            <h3 style="margin:8px 0;">创业先锋：张三</h3>
+            <div style="font-size:0.7rem; color:#999;">原武警某部班长 · 服役8年</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8; text-align:left; margin-top:12px;">
+                <p>2018年退伍后创办武汉铁卫安保服务有限公司。从最初5人小队起步，现已发展为拥有300余名员工的区域头部安保企业。</p>
+                <p style="margin-top:8px;"><strong>拥军贡献：</strong>累计吸纳87名退役军人就业，管理层中退役军人占比超过60%。2025年被评为"湖北省退役军人创业示范基地"。</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="l3-honor-3" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">拥军风采</span></div>
+        <div class="card" style="margin-top:0; text-align:center;">
+            <div style="font-size:3rem;">🚒</div>
+            <h3 style="margin:8px 0;">逆行英雄：赵六</h3>
+            <div style="font-size:0.7rem; color:#999;">原消防兵 · 服役5年</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8; text-align:left; margin-top:12px;">
+                <p>退伍后组建"老兵应急救援志愿队"，在武汉历次暴雨洪涝中挺身而出。2025年长江汛期，带领30余名老兵志愿者连续奋战72小时，转移群众200余人。</p>
+                <p style="margin-top:8px;">累计参与各类应急救援行动30余次，用行动践行"退伍不褪色"的誓言。</p>
+            </div>
+            <button class="btn" onclick="showToast('感谢关注！如需加入老兵志愿队请联系我们。')">加入老兵志愿队</button>
+        </div>
+    </div>
+    <div id="l3-honor-2" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">拥军风采</span></div>
+        <div class="card" style="margin-top:0; text-align:center;">
+            <div style="font-size:3rem;">❤️</div>
+            <h3 style="margin:8px 0;">公益之星：李四</h3>
+            <div style="font-size:0.7rem; color:#999;">原陆军某旅士官 · 服役12年</div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8; text-align:left; margin-top:12px;">
+                <p>2020年发起成立"江城老兵互助基金"，为生活困难、重大疾病的退役军人家庭提供紧急援助。</p>
+                <p style="margin-top:8px;"><strong>公益成果：</strong>至今已帮扶230余个困难老兵家庭，累计募集善款超180万元。2026年获得"武汉市最美退役军人"称号。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRAINING DETAILS -->
+    <div id="l3-training-1" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">培训详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3>🚁 民用无人机驾驶员认证培训</h3>
+            <div class="tags" style="margin:8px 0;"><span class="tag tag-hot">政府补贴</span><span class="tag">推荐就业</span></div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>培训内容：</strong>AOPA/UTC双证培训，涵盖无人机飞行原理、航拍技术、电力巡检、农业植保等方向。</p>
+                <p><strong>培训周期：</strong>15天全日制</p>
+                <p><strong>费用：</strong>市场价¥8,800 → 退役军人补贴后<strong style="color:#c0392b;">¥0</strong></p>
+                <p><strong>就业方向：</strong>电力巡检、影视航拍、农业植保、测绘</p>
+            </div>
+            <button class="btn" onclick="showToast('培训报名成功！下期开班时间：2026年6月30日')">免费报名</button>
+        </div>
+    </div>
+
+    <div id="l3-training-2" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">培训详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3>💻 短视频运营与直播电商</h3>
+            <div class="tags" style="margin:8px 0;"><span class="tag tag-new">新增</span></div>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>培训内容：</strong>手机拍摄剪辑、抖音账号运营、直播话术、团购带货实操。</p>
+                <p><strong>培训周期：</strong>7天速成班</p>
+                <p><strong>费用：</strong>退伍军人<strong style="color:#27ae60;">免费</strong></p>
+            </div>
+            <button class="btn" onclick="showToast('报名成功！客服将发送开班通知')">免费报名</button>
+        </div>
+    </div>
+
+    <div id="l3-training-4" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">培训详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3>🍳 中式烹饪与餐饮管理</h3>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>培训内容：</strong>刀工技法、火候控制、经典菜品制作、餐饮成本核算、食品安全管理。</p>
+                <p><strong>培训周期：</strong>30天全日制</p>
+                <p><strong>就业方向：</strong>推荐星级酒店、连锁餐饮企业。创业可申请退役军人餐饮创业扶持。</p>
+            </div>
+            <button class="btn" onclick="showToast('报名成功！客服将联系您确认开班时间')">免费报名</button>
+        </div>
+    </div>
+
+    <div id="l3-training-5" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">培训详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3>🛡️ 消防设施操作员（中级）</h3>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>培训内容：</strong>消防设施监控、操作与维护保养，消防控制室管理。</p>
+                <p><strong>证书：</strong>国家职业资格证书（中级），全国通用。</p>
+                <p><strong>就业：</strong>持证上岗薪资6,000元/月起，物业/商场/工厂刚需岗位。</p>
+            </div>
+            <button class="btn" onclick="showToast('报名成功！培训+考证一站式服务')">报名考证</button>
+        </div>
+    </div>
+    <div id="l3-training-3" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">培训详情</span></div>
+        <div class="card" style="margin-top:0;">
+            <h3>🔧 新能源汽车维修技术</h3>
+            <div style="font-size:0.78rem; color:#666; line-height:1.8;">
+                <p><strong>培训内容：</strong>三电系统维修、故障诊断、电池维护。企业定向委培。</p>
+                <p><strong>培训周期：</strong>30天</p>
+                <p><strong>实习薪资：</strong>培训合格后直接进入合作企业实习，实习期薪资<strong style="color:#c0392b;">5,000元/月起</strong></p>
+            </div>
+            <button class="btn btn-green" onclick="showToast('报名成功！企业将联系您安排面试')">定向委培 · 立即报名</button>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAILS -->
+    <div id="l3-product-1" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">产品详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#1a5276,#154360);">
+            <h2>🧥 安保制式工装套装</h2>
+            <div class="price">¥189<span style="font-size:0.7rem;">/套起</span></div>
+            <div style="font-size:0.7rem; opacity:0.8;">50套起订 · 军需品同款工艺</div>
+        </div>
+        <div class="card">
+            <div class="detail-section"><h3>产品规格</h3><p>包含：上衣+裤子+腰带+肩章<br>面料：65%涤纶35%棉混纺，防静电处理<br>颜色：藏蓝/黑色可选<br>尺码：XS-5XL全码段覆盖</p></div>
+            <div class="detail-section"><h3>价格方案</h3><ul class="detail-list"><li>50-100套：¥189/套</li><li>100-300套：¥169/套</li><li>300套以上：¥149/套（含免费企业logo刺绣）</li></ul></div>
+            <div class="form-group"><label>预计采购数量</label><input type="number" placeholder="请输入件数" min="50"></div>
+            <div class="form-group"><label>联系人电话</label><input type="tel" placeholder="请输入手机号"></div>
+            <button class="btn btn-green" onclick="showToast('意向已提交！客户经理将在2小时内电联确认款式与报价。')">提交采购意向</button>
+        </div>
+    </div>
+
+    <div id="l3-product-2" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">产品详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#e67e22,#d35400);">
+            <h2>🎽 战友聚会纪念T恤</h2>
+            <div class="price">¥49<span style="font-size:0.7rem;">/件起</span></div>
+            <div style="font-size:0.7rem; opacity:0.8;">100件起订 · 免费刺绣部队番号</div>
+        </div>
+        <div class="card">
+            <div class="detail-section"><h3>产品规格</h3><p>面料：精梳棉，200g/m²<br>工艺：数码直喷印花，耐洗不掉色<br>定制：支持自由设计图案/文字/番号</p></div>
+        </div>
+    </div>
+
+    <div id="l3-product-3" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">产品详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#16a085,#0e6655);">
+            <h2>👔 企业行政工装衬衫</h2>
+            <div class="price">¥89<span style="font-size:0.7rem;">/件起</span></div>
+            <div style="font-size:0.7rem; opacity:0.8;">50件起订</div>
+        </div>
+        <div class="card">
+            <div class="detail-section"><h3>产品规格</h3><p>面料：免烫棉涤混纺<br>颜色：白/浅蓝/条纹可选<br>定制：左胸可刺绣企业logo</p></div>
+            <div class="form-group"><label>预计采购数量</label><input type="number" placeholder="请输入件数" min="50"></div>
+            <div class="form-group"><label>联系人电话</label><input type="tel" placeholder="请输入手机号"></div>
+            <button class="btn btn-green" onclick="showToast('意向已提交！客户经理将联系您确认款式。')">提交采购意向</button>
+        </div>
+    </div>
+
+    <div id="l3-product-4" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">产品详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#2c3e50,#1a252f);">
+            <h2>🧢 迷彩战术冲锋衣</h2>
+            <div class="price">¥259<span style="font-size:0.7rem;">/件起</span></div>
+            <div style="font-size:0.7rem; opacity:0.8;">30件起订</div>
+        </div>
+        <div class="card">
+            <div class="detail-section"><h3>产品规格</h3><p>面料：三层复合防水透气面料<br>功能：防风/防水/透气<br>迷彩：丛林/荒漠/城市灰三款</p></div>
+            <div class="form-group"><label>预计采购数量</label><input type="number" placeholder="请输入件数" min="30"></div>
+            <div class="form-group"><label>联系人电话</label><input type="tel" placeholder="请输入手机号"></div>
+            <button class="btn btn-green" onclick="showToast('意向已提交！客户经理将联系您确认迷彩款式。')">提交采购意向</button>
+        </div>
+    </div>
+
+    <div id="l3-product-5" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">产品详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#6c3483,#4a235a);">
+            <h2>👖 战术工装裤</h2>
+            <div class="price">¥139<span style="font-size:0.7rem;">/条起</span></div>
+            <div style="font-size:0.7rem; opacity:0.8;">50条起订 · 防撕裂面料</div>
+        </div>
+        <div class="card">
+            <div class="detail-section"><h3>产品规格</h3><p>面料：65%涤35%棉防撕裂格纹布<br>口袋：8袋战术设计，大腿双侧立体袋<br>加固：膝部双层补强，裆部三角插片<br>颜色：卡其/狼棕/黑色</p></div>
+            <div class="detail-section"><h3>价格方案</h3><ul class="detail-list"><li>50-200条：¥139/条</li><li>200-500条：¥119/条</li><li>500条以上：¥99/条（含logo刺绣）</li></ul></div>
+            <div class="form-group"><label>预计采购数量</label><input type="number" placeholder="请输入件数" min="50"></div>
+            <div class="form-group"><label>联系人电话</label><input type="tel" placeholder="请输入手机号"></div>
+            <button class="btn btn-green" onclick="showToast('意向已提交！客户经理将联系您确认款式与尺码。')">提交采购意向</button>
+        </div>
+    </div>
+
+    <div id="l3-product-6" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">产品详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#2980b9,#1a5276);">
+            <h2>🧢 刺绣纪念棒球帽</h2>
+            <div class="price">¥35<span style="font-size:0.7rem;">/顶起</span></div>
+            <div style="font-size:0.7rem; opacity:0.8;">100顶起订 · 多色可选</div>
+        </div>
+        <div class="card">
+            <div class="detail-section"><h3>产品规格</h3><p>面料：纯棉斜纹布<br>刺绣：可定制部队番号/年份/纪念文字<br>后扣：金属调节扣，均码可调<br>颜色：藏蓝/军绿/黑/红</p></div>
+            <div class="detail-section"><h3>适用场景</h3><p>战友聚会纪念、企业团队建设、退伍季纪念品。支持来图来样定制。</p></div>
+            <div class="form-group"><label>预计采购数量</label><input type="number" placeholder="请输入件数" min="100"></div>
+            <div class="form-group"><label>联系人电话</label><input type="tel" placeholder="请输入手机号"></div>
+            <button class="btn btn-green" onclick="showToast('意向已提交！设计师将联系您确认刺绣图案。')">提交采购意向</button>
+        </div>
+    </div>
+
+    <div id="l3-product-7" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">产品详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#7f8c8d,#5d6d7e);">
+            <h2>🧤 劳保手套（防割级）</h2>
+            <div class="price">¥12<span style="font-size:0.7rem;">/双起</span></div>
+            <div style="font-size:0.7rem; opacity:0.8;">200双起订 · EN388认证</div>
+        </div>
+        <div class="card">
+            <div class="detail-section"><h3>产品规格</h3><p>材质：HPPE+钢丝混纺，掌心浸胶<br>防割等级：EN388 Level 5<br>适用：物流搬运/金属加工/安保执勤<br>尺码：M/L/XL</p></div>
+            <div class="detail-section"><h3>价格方案</h3><ul class="detail-list"><li>200-500双：¥12/双</li><li>500-1000双：¥10/双</li><li>1000双以上：¥8.5/双</li></ul></div>
+            <div class="form-group"><label>预计采购数量</label><input type="number" placeholder="请输入件数" min="200"></div>
+            <div class="form-group"><label>联系人电话</label><input type="tel" placeholder="请输入手机号"></div>
+            <button class="btn btn-green" onclick="showToast('意向已提交！客户经理将联系您。')">提交采购意向</button>
+        </div>
+    </div>
+
+    <div id="l3-product-8" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">产品详情</span></div>
+        <div class="detail-hero" style="background:linear-gradient(135deg,#e67e22,#d35400);">
+            <h2>🦺 反光安全马甲</h2>
+            <div class="price">¥28<span style="font-size:0.7rem;">/件起</span></div>
+            <div style="font-size:0.7rem; opacity:0.8;">100件起订 · 多口袋设计</div>
+        </div>
+        <div class="card">
+            <div class="detail-section"><h3>产品规格</h3><p>面料：120g荧光黄涤纶网眼布<br>反光条：3M Scotchlite，360°环绕<br>口袋：胸前2+内袋2+笔插<br>尺码：均码/大码，可调节</p></div>
+            <div class="detail-section"><h3>适用场景</h3><p>工地施工/交通指挥/物流园区/大型活动安保。支持印刷企业logo。</p></div>
+            <div class="form-group"><label>预计采购数量</label><input type="number" placeholder="请输入件数" min="100"></div>
+            <div class="form-group"><label>联系人电话</label><input type="tel" placeholder="请输入手机号"></div>
+            <button class="btn btn-green" onclick="showToast('意向已提交！')">提交采购意向</button>
+        </div>
+    </div>
+    <div id="l3-contact-form" class="l3-page">
+        <div class="back-header"><span class="back-btn" onclick="goToL2()">←</span><span class="back-title">在线留言</span></div>
+        <div class="card" style="margin-top:0;">
+            <div class="form-group"><label>姓名</label><input type="text" placeholder="请输入您的姓名"></div>
+            <div class="form-group"><label>手机号</label><input type="tel" placeholder="请输入您的手机号"></div>
+            <div class="form-group"><label>咨询类型</label>
+                <select><option>就业服务</option><option>大宗定制</option><option>政策咨询</option><option>技能培训</option><option>创业贷款</option><option>其他</option></select>
+            </div>
+            <div class="form-group"><label>留言内容</label><textarea placeholder="请简要描述您的需求"></textarea></div>
+            <button class="btn" onclick="showToast('留言已提交！专属顾问将在2小时内与您联系。')">提交留言</button>
+        </div>
+    </div>
+
+    <!-- ===== Toast ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===== Bottom Tab Bar ===== -->
+    <div class="nav-bar">
+        <div class="nav-item active" id="nav-home" onclick="switchTab('home')">
+            <span class="icon">🏠</span><span>服务港</span>
+        </div>
+        <div class="nav-item" id="nav-jobs" onclick="switchTab('jobs')">
+            <span class="icon">💼</span><span>找工作</span>
+        </div>
+        <div class="nav-item" id="nav-custom" onclick="switchTab('custom')">
+            <span class="icon">👕</span><span>大宗定制</span>
+        </div>
+        <div class="nav-item" id="nav-mine" onclick="switchTab('mine')">
+            <span class="icon">📞</span><span>我的</span>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// 退役军人服务港 — 导航引擎 v2
+// 三级路由栈：L1(tab) > L2(列表/分类) > L3(详情)
+// ============================================================
+
+const $ = (sel, ctx) => (ctx || document).querySelector(sel);
+const $$ = (sel, ctx) => [...(ctx || document).querySelectorAll(sel)];
+
+// ---- 状态 ----
+let navHistory = [{ l1: 'home' }];           // 导航历史栈，栈底永远是 L1 tab
+let activeFilters = {};                        // { 'l2-jobs-list': 'all', ... }
+
+// ---- 页面过渡 ----
+function showPage(el) {
+    el.classList.add('active');
+    el.style.animation = 'pageIn .25s ease';
+    setTimeout(() => el.style.animation = '', 260);
+}
+function hidePage(el) {
+    el.classList.remove('active');
+}
+
+// ---- 路由核心 ----
+function pushState(state) {
+    navHistory.push(state);
+    if (navHistory.length > 10) navHistory.splice(1, 1); // 防止无限膨胀
+}
+
+function renderCurrent() {
+    // 隐藏所有
+    $$('.l1-page, .l2-page, .l3-page').forEach(hidePage);
+    // 从栈顶开始逐层显示
+    let top = navHistory[navHistory.length - 1];
+    let el = document.getElementById(top.page || ('l1-' + top.l1));
+    if (el) {
+        showPage(el);
+        // 如果显示的是 L2/L3 且嵌套在某个 L1 内，同时显示父级 L1
+        let parentL1 = el.closest('.l1-page');
+        if (parentL1 && parentL1 !== el) showPage(parentL1);
+    }
+    // 更新底部 Tab 高亮
+    $$('.nav-item').forEach(n => n.classList.remove('active'));
+    let tabNav = document.getElementById('nav-' + top.l1);
+    if (tabNav) tabNav.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ---- 公开 API ----
+
+// 切换底部 Tab（重置栈）
+function switchTab(tabId) {
+    navHistory = [{ l1: tabId }];
+    // 如果有默认 L2，自动压入
+    let defs = { jobs: 'l2-jobs-list', custom: 'l2-custom-list', mine: 'l2-mine-main' };
+    if (defs[tabId]) navHistory.push({ l1: tabId, page: defs[tabId] });
+    renderCurrent();
+}
+
+// 导航到 L2 或 L3 页面
+function navigate(targetId) {
+    let top = navHistory[navHistory.length - 1];
+    if (targetId.startsWith('l2-')) {
+        navHistory = [{ l1: top.l1 }, { l1: top.l1, page: targetId }];
+    } else if (targetId.startsWith('l3-')) {
+        navHistory.push({ l1: top.l1, page: targetId });
+    }
+    renderCurrent();
+}
+
+// 返回上一级
+function goBack() {
+    if (navHistory.length <= 1) {
+        navHistory = [{ l1: 'home' }];
+    } else {
+        navHistory.pop();
+    }
+    renderCurrent();
+}
+
+// L3 详情返回 L2（只关 L3，不关 L2）
+function goToL2() {
+    // 找到栈中最后一个 L2 层级
+    while (navHistory.length > 1) {
+        let cur = navHistory[navHistory.length - 1].page || '';
+        if (cur.startsWith('l2-') || !cur.startsWith('l3-')) break;
+        navHistory.pop();
+    }
+    // 如果最外层是 L3，再多弹一层
+    let top = navHistory[navHistory.length - 1];
+    if (top.page && top.page.startsWith('l3-')) navHistory.pop();
+    renderCurrent();
+}
+
+// ---- 筛选器（通用） ----
+function makeFilter(containerSel, itemSel, dataAttr) {
+    return function(cat, el) {
+        $$(containerSel + ' .pill').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+        let visibleCount = 0;
+        $$(itemSel).forEach(item => {
+            let match = cat === 'all' || item.dataset[dataAttr] === cat;
+            item.style.display = match ? '' : 'none';
+            if (match) visibleCount++;
+        });
+        // 空结果提示
+        let existing = $(containerSel + ' .empty-hint');
+        if (visibleCount === 0 && cat !== 'all') {
+            if (!existing) {
+                let hint = document.createElement('div');
+                hint.className = 'empty-hint';
+                hint.style.cssText = 'text-align:center;padding:30px 15px;color:#bbb;font-size:0.8rem;';
+                hint.textContent = '该分类暂无内容';
+                $(containerSel + ' .card').appendChild(hint);
+            }
+        } else if (existing) {
+            existing.remove();
+        }
+    };
+}
+
+const filterJobs = makeFilter('#l2-jobs-list', '#l2-jobs-list .job-card', 'cat');
+const filterProducts = makeFilter('#l2-custom-list', '#productGrid .product-card', 'cat');
+const filterPolicy = makeFilter('#l2-policy', '.policy-item', 'pol');
+const filterHonor = makeFilter('#l2-honor', '.honor-item', 'hon');
+
+// ---- 表单校验 ----
+function validateForm(container) {
+    let inputs = $$('input[type="number"], input[type="tel"], input[type="text"]', container);
+    let ok = true;
+    inputs.forEach(inp => {
+        inp.style.borderColor = '#ddd';
+        if (!inp.value.trim()) {
+            inp.style.borderColor = '#e74c3c';
+            inp.placeholder = '此项为必填';
+            ok = false;
+        } else if (inp.type === 'tel' && !/^1\d{10}$/.test(inp.value.trim())) {
+            inp.style.borderColor = '#e74c3c';
+            inp.value = '';
+            inp.placeholder = '请输入正确的11位手机号';
+            ok = false;
+        } else if (inp.type === 'number' && parseInt(inp.value) < parseInt(inp.min || 1)) {
+            inp.style.borderColor = '#e74c3c';
+            inp.placeholder = '最低起订量：' + inp.min;
+            ok = false;
+        }
+    });
+    return ok;
+}
+
+// ---- Toast 队列 ----
+let toastTimer = null;
+function showToast(msg) {
+    let t = document.getElementById('toast');
+    if (toastTimer) { clearTimeout(toastTimer); t.classList.remove('show'); }
+    t.textContent = msg;
+    // 强制回流后显示
+    void t.offsetWidth;
+    t.classList.add('show');
+    toastTimer = setTimeout(() => { t.classList.remove('show'); toastTimer = null; }, 2200);
+}
+
+// ---- 全局按钮委托（处理所有 L3 页面的表单提交） ----
+document.addEventListener('click', function(e) {
+    let btn = e.target.closest('button');
+    if (!btn) return;
+    // 查找最近的 form-group 所在卡片
+    let card = btn.closest('.card');
+    if (card && $$('input', card).length > 0) {
+        if (!validateForm(card)) {
+            showToast('请完善表单信息');
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        // 验证通过，如果按钮已有 onclick，让它正常触发
+        if (btn.hasAttribute('onclick')) return;
+        showToast('提交成功！专属顾问将在2小时内与您联系。');
+        e.preventDefault();
+    }
+}, true);
+
+// ---- 键盘导航 ----
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') goBack();
+});
+
+// ---- 初始化 ----
+renderCurrent();
+</script>
+</body>
+</html>
